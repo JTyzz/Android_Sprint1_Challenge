@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ListPage extends AppCompatActivity {
@@ -32,30 +33,28 @@ public class ListPage extends AppCompatActivity {
 
         context = this;
         listLayout = findViewById(R.id.list_layout);
-
         viewModel = ViewModelProviders.of(this).get(MovieListViewModel.class);
-        viewModel.getOverViewList().observe(this, new Observer<ArrayList<Movies>>() {
+        final Observer<ArrayList<Movies>> observer = new Observer<ArrayList<Movies>>() {
             @Override
             public void onChanged(@Nullable ArrayList<Movies> movies) {
-                if(movies != null){
-                    for(Movies movie: movies){
-                        listLayout.addView(getDefaultTextView(movie));
-                    }
+                if(movies != null) {
+                    refreshListView(movies);
                 }
             }
-        });
+        };
+        viewModel.getMoviesList().observe(this, observer);
 
         findViewById(R.id.add_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, EditPage.class);
-                Movies newMovie = new Movies(movies.size());
-                movies.add(newMovie);
+                Movies newMovie = new Movies(Movies.NO_ID);
                 intent.putExtra(EditPage.EDIT_MOVIE_KEY, newMovie);
                 startActivityForResult(intent, EDIT_REQUEST_CODE);
             }
         });
-    }
+
+}
 
     private TextView getDefaultTextView(final Movies movies) {
         TextView textView = new TextView(context);
@@ -74,7 +73,7 @@ public class ListPage extends AppCompatActivity {
         return textView;
     }
 
-    private void refreshListView() {
+    private void refreshListView(ArrayList<Movies> movies) {
         listLayout.removeAllViews();
         for (Movies movie : movies) {
             listLayout.addView(getDefaultTextView(movie));
@@ -88,18 +87,18 @@ public class ListPage extends AppCompatActivity {
             if (requestCode == EDIT_REQUEST_CODE) {
                 if (data != null) {
                     Movies returnedMovies = (Movies) data.getSerializableExtra(EditPage.EDIT_MOVIE_KEY);
-
-                    boolean foundMovies = false;
-                    for (int i = 0; i < movies.size(); ++i) {
-                        if (movies.get(i).getId() == returnedMovies.getId()) {
-                            movies.set(i, returnedMovies);
-                            foundMovies = true;
-                        }
-                    }
-                    if (!foundMovies) {
-                        movies.add(returnedMovies);
-                    }
-                    refreshListView();
+//
+//                    boolean foundMovies = false;
+//                    for (int i = 0; i < movies.size(); ++i) {
+//                        if (movies.get(i).getId() == returnedMovies.getId()) {
+//                            movies.set(i, returnedMovies);
+//                            foundMovies = true;
+//                        }
+//                    }
+//                    if (!foundMovies) {
+//                        movies.add(returnedMovies);
+//                    }
+                    viewModel.addMovie(returnedMovies);
                 }
             }
         }

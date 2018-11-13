@@ -6,10 +6,28 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MovieListRepo implements Serializable {
-    public static MutableLiveData<ArrayList<Movies>> getOverviewList () {
-        final MutableLiveData<ArrayList<Movies>> liveDataList = new MutableLiveData<>();
-//        ArrayList<Movies> overviews = Movies.getTitle();
-//        liveDataList.setValue(overviews);
+
+    private ArrayList<Movies> movies;
+
+    public MovieListRepo(){
+        this.movies = new ArrayList<>();
+    }
+
+
+    public MutableLiveData<ArrayList<Movies>> getMovieList() {
+        MutableLiveData<ArrayList<Movies>> liveDataList = new MutableLiveData<>();
+        liveDataList.setValue(movies);
         return liveDataList;
+    }
+
+    public ArrayList<Movies> addMovie(Movies movie) {
+        if (movie.getId() == Movies.NO_ID) {
+            int movieIndex = movies.size();
+            movie.setId(movieIndex);
+            movies.add(movie);
+        } else {
+            movies.set(movie.getId(), movie);
+        }
+        return movies;
     }
 }
