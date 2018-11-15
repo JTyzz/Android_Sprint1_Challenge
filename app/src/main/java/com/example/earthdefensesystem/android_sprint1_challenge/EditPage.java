@@ -54,16 +54,16 @@ public class EditPage extends AppCompatActivity {
             }
         });
 
-//        findViewById(R.id.watched_button).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!editMovie.getPaint().isStrikeThruText()) {
-//                    editMovie.setPaintFlags(editMovie.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//                } else {
-//                    editMovie.setPaintFlags(editMovie.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-//                }
-//            }
-//        });
+        findViewById(R.id.watched_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!editMovie.getPaint().isStrikeThruText()) {
+                    editMovie.setPaintFlags(editMovie.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    editMovie.setPaintFlags(editMovie.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                }
+            }
+        });
 
         movie = (Movies) getIntent().getSerializableExtra(EDIT_MOVIE_KEY);
         if(movie == null) {
