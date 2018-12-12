@@ -7,8 +7,9 @@ public class  Movies implements Serializable {
 
     private String title;
     private int id;
+    private boolean watched;
 
-    public Movies(int id, String title) {
+    public Movies(int id, String title, Boolean watched) {
         this.id = id;
         this.title = title;
     }
@@ -16,6 +17,7 @@ public class  Movies implements Serializable {
     public Movies(int id){
         this.id = id;
     }
+
 
     public String getTitle(){
         return title;
@@ -31,5 +33,12 @@ public class  Movies implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setWatched(Boolean watched){
+       this.watched = watched;
+    }
+    public boolean getWatched(){
+        return watched;
     }
 }

@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -61,6 +62,12 @@ public class ListPage extends AppCompatActivity {
         textView.setText(movies.getTitle());
         textView.setTextSize(24);
         textView.setPadding(12, 12, 12, 12);
+        boolean watched = movies.getWatched();
+        if (watched)
+        {
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
